@@ -4,6 +4,7 @@ ThisBuild / tlBaseVersion := "0.1" // your current series x.y
 
 ThisBuild / organization     := "io.funktional"
 ThisBuild / organizationName := "FunktionalIO"
+ThisBuild / homepage         := Some(url("https://github.com/FunktionalIO/rumpel"))
 ThisBuild / startYear        := Some(2024)
 ThisBuild / licenses         := Seq("EPL-2.0" -> url("https://www.eclipse.org/legal/epl-2.0/"))
 ThisBuild / developers ++= List(
@@ -12,6 +13,10 @@ ThisBuild / developers ++= List(
 )
 
 ThisBuild / sonatypeCredentialHost := sonatypeCentralHost
+ThisBuild / publishTo              := sonatypePublishToBundle.value
+ThisBuild / scmInfo                := Some(
+  ScmInfo(url("https://github.com/FunktionalIO/rumpel"), "scm:git:git@github.com:FunktionalIO/rumpel.git")
+)
 
 val Scala3 = "3.3.4"
 ThisBuild / scalaVersion := Scala3 // the default Scala
