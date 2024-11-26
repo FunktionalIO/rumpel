@@ -16,8 +16,6 @@ trait Dictionary:
      */
     def pickOne(random: Random): (Random, String)
 
-    def separator(separator: String): Dictionary =
-        Dictionary.Filled(separator, this)
 end Dictionary
 
 /**
@@ -44,11 +42,5 @@ object Dictionary:
             val (rng, index) = random.nextInt(words.size)
             (rng, words(index))
     end ListBased
-
-    class Filled(separator: String, wrapped: Dictionary) extends Dictionary:
-        def pickOne(random: Random): (Random, String) =
-            val (rng, word) = wrapped.pickOne(random)
-            (rng, word.replaceAll(" ", separator))
-    end Filled
 
 end Dictionary

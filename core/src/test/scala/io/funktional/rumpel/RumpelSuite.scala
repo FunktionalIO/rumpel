@@ -8,8 +8,6 @@ import munit.FunSuite
 
 class RumpelSuite extends FunSuite:
 
-    class MockDictionary(override val words: List[String]) extends Dictionary.ListBased
-
     private val dic1 = MockDictionary(List("one"))
     private val dic2 = MockDictionary(List("two"))
     private val dic3 = MockDictionary(List("three"))
