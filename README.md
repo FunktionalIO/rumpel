@@ -17,8 +17,12 @@
 Add the following dependency to your `build.sbt`:
 
 ```scala
-libraryDependencies += "io.funktional" %% "rumpel" % "0.1.0"
-Note: Ensure the library is published to Maven Central before use.
+libraryDependencies += "io.funktional" %% "rumpel" % "<version>"
+```
+If you are compiling for non-JVM targets, you can use the cross-versioned dependency:
+
+```scala
+libraryDependencies += "io.funktional" %%% "rumpel" % "<version>"
 ```
 
 ### Usage
@@ -26,6 +30,9 @@ Here’s an example of how to use Rumpel:
 
 ```scala
 import io.funktional.rumpel.*
+import io.funktional.rumpel.dictionaries.Adjectives
+import io.funktional.rumpel.dictionaries.Animals
+import io.funktional.rumpel.dictionaries.Colors
 
 object Example extends App:
   val config = RumpelConfig(
@@ -35,6 +42,29 @@ object Example extends App:
   )
 
   val rumpel = new Rumpel(config)
+
+  println(rumpel.generate()) // Example: "brave-red-fox"
+```
+
+It is possible to use a custom random number generator by providing an instance of `io.funktional.rumpel.Random`:
+
+```scala
+object MyRandom extends io.funktional.rumpel.Random:
+    def nextInt(n: Int): (Random, Int) =
+      ??? // Implement your own logic here
+    def shuffle[T](elements: List[T]): (Random, List[T]) =
+      ??? // Implement your own logic here
+    def pick[T](list: List[T], n: Int): (Random, List[T]) =
+      ??? // Implement your own logic here
+
+object Example extends App:
+  val config = RumpelConfig(
+    dictionaries = List(Adjectives, Colors, Animals),
+    separator = "-",
+    length = 3
+  )
+
+  val rumpel = new Rumpel(config, MyRandom)
 
   println(rumpel.generate()) // Example: "brave-red-fox"
 ```
@@ -58,7 +88,6 @@ You can also add your own custom dictionaries.
 
 ## Roadmap
 - Expand built-in dictionaries.
-- Add support for Scala.js and Scala Native.
 - Introduce advanced customization features.
 - Provide integration examples with popular Scala frameworks.
 

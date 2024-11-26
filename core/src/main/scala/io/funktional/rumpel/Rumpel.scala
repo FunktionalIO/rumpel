@@ -5,12 +5,7 @@ package io.funktional.rumpel
  *
  * @param config the configuration for the Rumpel generator
  */
-final case class Rumpel(config: RumpelConfig):
-    /**
-     * A variable holding the current state of the random number generator.
-     */
-    private var random: Random = config.seed.fold(Random(System.nanoTime()))(Random(_))
-
+final case class Rumpel(config: RumpelConfig, private var random: Random):
     /**
      * Generates a string based on the dictionaries and style defined in the configuration.
      *
@@ -26,3 +21,7 @@ final case class Rumpel(config: RumpelConfig):
         words.map(config.style.format).mkString(" ").replace(" ", config.separator)
     end generate
 end Rumpel
+
+object Rumpel:
+    def apply(config: RumpelConfig): Rumpel =
+        Rumpel(config, config.seed.fold(Random.default)(Random.withSeed))
