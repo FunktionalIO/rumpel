@@ -1,3 +1,5 @@
+import xerial.sbt.Sonatype.sonatypeCentralHost
+
 ThisBuild / tlBaseVersion := "0.1" // your current series x.y
 
 ThisBuild / organization     := "io.funktional"
@@ -9,8 +11,7 @@ ThisBuild / developers ++= List(
   tlGitHubDev("rlemaitre", "Raphaël Lemaitre")
 )
 
-//// false by default, set to true to publish to oss.sonatype.org
-//ThisBuild / sonatypeCredentialHost := "s01.oss.sonatype.org"
+ThisBuild / sonatypeCredentialHost := sonatypeCentralHost
 
 val Scala3 = "3.3.4"
 ThisBuild / scalaVersion := Scala3 // the default Scala
