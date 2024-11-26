@@ -13,7 +13,6 @@ ThisBuild / developers ++= List(
 )
 
 ThisBuild / sonatypeCredentialHost := sonatypeCentralHost
-ThisBuild / publishTo              := sonatypePublishToBundle.value
 ThisBuild / scmInfo                := Some(
   ScmInfo(url("https://github.com/FunktionalIO/rumpel"), "scm:git:git@github.com:FunktionalIO/rumpel.git")
 )
@@ -33,7 +32,6 @@ ThisBuild / autoAPIMappings          := true
 val sharedSettings = Seq(
   organization   := "io.funktional",
   name           := "rumpel",
-  version        := "0.1-SNAPSHOT",
   scalaVersion   := "3.3.4",
   libraryDependencies ++= Seq(
     "org.scalameta" %%% "munit" % "1.0.2" % Test
