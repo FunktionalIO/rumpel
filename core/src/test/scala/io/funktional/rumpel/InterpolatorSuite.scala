@@ -31,4 +31,10 @@ class InterpolatorSuite extends FunSuite:
         assertEquals(rumpel"$nested@$foo.$raw".generate(using Random.default), "foo_bar_baz@foo.some_very_raw_string")
     }
 
+    test("interpolation: using a function") {
+        def inject(value: String): RumpelFormat = rumpel"$value"
+
+        assertEquals(rumpel"${inject("foo")}_${inject("bar")}".generate(using Random.default), "foo_bar")
+    }
+
 end InterpolatorSuite
