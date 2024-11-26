@@ -18,25 +18,35 @@ ThisBuild / scalaVersion := Scala3 // the default Scala
 ThisBuild / githubWorkflowOSes         := Seq("ubuntu-latest")
 ThisBuild / githubWorkflowJavaVersions := Seq(JavaSpec.temurin("11"))
 
+ThisBuild / tlCiHeaderCheck          := true
 ThisBuild / tlCiScalafmtCheck        := true
 ThisBuild / tlCiMimaBinaryIssueCheck := true
 ThisBuild / tlCiDependencyGraphJob   := true
 ThisBuild / autoAPIMappings          := true
 
 val sharedSettings = Seq(
-  organization := "io.funktional",
-  name         := "rumpel",
-  version      := "0.1-SNAPSHOT",
-  scalaVersion := "3.3.4",
+  organization   := "io.funktional",
+  name           := "rumpel",
+  version        := "0.1-SNAPSHOT",
+  scalaVersion   := "3.3.4",
   libraryDependencies ++= Seq(
     "org.scalameta" %%% "munit" % "1.0.2" % Test
-  )
+  ),
+  // Headers
+  headerMappings := headerMappings.value + (HeaderFileType.scala -> HeaderCommentStyle.cppStyleLineComment),
+  headerLicense  := Some(HeaderLicense.Custom(
+    """|Copyright (c) 2024-2024 by Raphaël Lemaitre and Contributors
+               |This software is licensed under the Eclipse Public License v2.0 (EPL-2.0).
+               |For more information see LICENSE or https://opensource.org/license/epl-2-0
+               |""".stripMargin
+  ))
 )
 
 lazy val root =
     project
         .in(file("."))
         .aggregate(rumpel.js, rumpel.jvm, rumpel.native, unidocs)
+        .settings(sharedSettings)
         .settings(
           publish      := {},
           publishLocal := {}
