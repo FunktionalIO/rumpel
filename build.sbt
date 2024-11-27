@@ -1,3 +1,4 @@
+import xerial.sbt.Sonatype.GitHubHosting
 import xerial.sbt.Sonatype.sonatypeCentralHost
 
 ThisBuild / tlBaseVersion := "0.1" // your current series x.y
@@ -13,6 +14,7 @@ ThisBuild / developers ++= List(
 )
 
 ThisBuild / sonatypeCredentialHost := sonatypeCentralHost
+ThisBuild / sonatypeProjectHosting := Some(GitHubHosting("FunktionalIO", "rumpel", "github.com.lushly070@passmail.net"))
 ThisBuild / scmInfo                := Some(
   ScmInfo(url("https://github.com/FunktionalIO/rumpel"), "scm:git:git@github.com:FunktionalIO/rumpel.git")
 )
@@ -52,8 +54,7 @@ lazy val root =
         .aggregate(rumpel.js, rumpel.jvm, rumpel.native, unidocs)
         .settings(sharedSettings)
         .settings(
-          publish      := {},
-          publishLocal := {}
+          publish / skip := true
         )
 
 lazy val rumpel  =
