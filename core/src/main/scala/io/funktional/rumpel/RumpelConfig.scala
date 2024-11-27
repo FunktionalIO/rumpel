@@ -29,20 +29,16 @@ object RumpelConfig:
         case LowerCase
         case UpperCase
         case Capitalize
-    end Style
 
-    /**
-     * Extension methods for the Style enumeration.
-     */
-    extension (style: Style)
         /**
          * Formats a string according to the style.
          *
          * @param value the string to be formatted
          * @return the formatted string
          */
-        def format(value: String): String = style match
-            case Style.LowerCase  => value.toLowerCase
-            case Style.UpperCase  => value.toUpperCase
-            case Style.Capitalize => value.capitalize
+        def format(value: String): String = this match
+            case LowerCase  => value.toLowerCase
+            case UpperCase  => value.toUpperCase
+            case Capitalize => value.capitalize
+    end Style
 end RumpelConfig

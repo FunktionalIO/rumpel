@@ -69,6 +69,25 @@ object Example extends App:
   println(rumpel.generate()) // Example: "brave-red-fox"
 ```
 
+Alternatively, you can also use the `rumpel` interpolator to customize more complex format.
+Casing changes and separator tuning are not yet supported using this mode, so be careful of the generators you use !
+
+```scala
+import io.funktional.rumpel.*
+import io.funktional.rumpel.dictionaries.*
+
+val identifier = rumpel"$Adjectives.$Animals"
+
+// you can then use the `.generate` method with a given random in scope
+println(identifier.generate(using Random.default)) // Exemple: "brave.fox"
+
+// The interpolator can also accept raw strings and even other RumpelFormat objects !
+def fakeEmail(domain: String)(using Random): String =
+  rumpel"$identifier@$domain.$Colors".generate
+
+println(fakeEmail("yahoo")(using Random.default)) // Exemple: "brave.fox@yahoo.blue"
+```
+
 ### Configuration Options
 You can customize Rumpel by providing a `RumpelConfig`:
 
