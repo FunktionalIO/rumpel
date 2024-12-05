@@ -15,12 +15,14 @@ trait Dictionary:
      * @return a tuple containing the updated Random instance and the picked word
      */
     def pickOne(random: Random): (Random, String)
+
 end Dictionary
 
 /**
  * Companion object for the Dictionary trait.
  */
 object Dictionary:
+
     /**
      * A trait representing a dictionary based on a list of words.
      */
@@ -40,4 +42,5 @@ object Dictionary:
             val (rng, index) = random.nextInt(words.size)
             (rng, words(index))
     end ListBased
+
 end Dictionary
