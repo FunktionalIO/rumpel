@@ -255,3 +255,10 @@ jobs:
           echo "previousTag=$name" >> $GITHUB_ENV
           echo "nextTag=$next_version"
           echo "nextTag=$next_version" >> $GITHUB_ENV
+
+      - name: Update CHANGELOG
+        id: changelog
+        if: startsWith(github.ref, 'refs/tags/v')
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: SomethingCo/conventional-changelog-action@v1.0.2

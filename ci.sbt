@@ -29,6 +29,13 @@ val releasePreparation = WorkflowJob(
         """echo "nextTag=$next_version"""",
         """echo "nextTag=$next_version" >> $GITHUB_ENV"""
       )
+    ),
+    WorkflowStep.Use(
+      name = Some("Update CHANGELOG"),
+      id = Some("changelog"),
+      ref = UseRef.Public("SomethingCo", "conventional-changelog-action", "v1.0.2"),
+      cond = Some("""startsWith(github.ref, 'refs/tags/v')"""),
+      env = Map("GITHUB_TOKEN" -> "${{ secrets.GITHUB_TOKEN }}")
     )
   )
 )
