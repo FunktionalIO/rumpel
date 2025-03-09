@@ -2,7 +2,7 @@ import org.typelevel.sbt.gha.Permissions
 import xerial.sbt.Sonatype.GitHubHosting
 import xerial.sbt.Sonatype.sonatypeCentralHost
 
-ThisBuild / tlBaseVersion := "0.1" // your current series x.y
+ThisBuild / tlBaseVersion := "0.0" // your current series x.y
 
 ThisBuild / organization     := "io.funktional"
 ThisBuild / organizationName := "FunktionalIO"

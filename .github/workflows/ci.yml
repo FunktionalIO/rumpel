@@ -259,6 +259,37 @@ jobs:
       - name: Update CHANGELOG
         id: changelog
         if: startsWith(github.ref, 'refs/tags/v')
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        uses: SomethingCo/conventional-changelog-action@v1.0.2
+        uses: requarks/changelog-action@v1
+        with:
+          token: ${{ github.token }}
+          fromTag: ${{ github.ref_name }}
+          toTag: ${{ env.previousTag }}
+          writeToFile: true
+
+      - name: Commit CHANGELOG.md
+        if: github.ref != 'refs/tags/v0.0.1' && startsWith(github.ref, 'refs/tags/v')
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: 'docs: update CHANGELOG.md for ${{ env.nextTag }} [skip ci]'
+          branch: main
+          file_pattern: CHANGELOG.md docToolchainConfig.groovy
+
+      - name: Create version tag
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: rickstaa/action-create-tag@v1
+        with:
+          tag: ${{ github.ref_name }}
+          message: Release ${{ github.ref_name }}
+          force_push_tag: true
+
+      - name: Create release
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: ncipollo/release-action@v1.15.0
+        with:
+          body: ${{ steps.changelog.outputs.changes }}
+          name: ${{ github.ref_name }}
+          tag: ${{ github.ref_name }}
+          draft: false
+          makeLatest: true
+          allowUpdates: true
+          token: ${{ github.token }}
