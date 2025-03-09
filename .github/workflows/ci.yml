@@ -258,7 +258,7 @@ jobs:
 
       - name: Update CHANGELOG
         id: changelog
-        if: startsWith(github.ref, 'refs/tags/v')
+        if: github.ref != 'refs/tags/v0.0.1' && startsWith(github.ref, 'refs/tags/v')startsWith(github.ref, 'refs/tags/v')
         uses: requarks/changelog-action@v1
         with:
           token: ${{ github.token }}

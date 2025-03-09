@@ -34,7 +34,9 @@ val releasePreparation = WorkflowJob(
       name = Some("Update CHANGELOG"),
       id = Some("changelog"),
       ref = UseRef.Public("requarks", "changelog-action", "v1"),
-      cond = Some("""startsWith(github.ref, 'refs/tags/v')"""),
+      cond = Some(
+        """github.ref != 'refs/tags/v0.0.1' && startsWith(github.ref, 'refs/tags/v')startsWith(github.ref, 'refs/tags/v')"""
+      ),
       params = Map(
         "token"       -> "${{ github.token }}",
         "fromTag"     -> "${{ github.ref_name }}",
