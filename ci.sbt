@@ -29,52 +29,6 @@ val releasePreparation = WorkflowJob(
         """echo "nextTag=$next_version"""",
         """echo "nextTag=$next_version" >> $GITHUB_ENV"""
       )
-    ),
-    WorkflowStep.Use(
-      name = Some("Update CHANGELOG"),
-      id = Some("changelog"),
-      ref = UseRef.Public("requarks", "changelog-action", "v1"),
-      cond = Some("""startsWith(github.ref, 'refs/tags/v')"""),
-      params = Map(
-        "token"       -> "${{ github.token }}",
-        "fromTag"     -> "${{ github.ref_name }}",
-        "toTag"       -> "${{ env.previousTag }}",
-        "writeToFile" -> "true"
-      )
-    ),
-    WorkflowStep.Use(
-      name = Some("Commit CHANGELOG.md"),
-      ref = UseRef.Public("stefanzweifel", "git-auto-commit-action", "v5"),
-      cond = Some("""startsWith(github.ref, 'refs/tags/v')"""),
-      params = Map(
-        "commit_message" -> "docs: update CHANGELOG.md for ${{ env.nextTag }} [skip ci]",
-        "branch"         -> "main",
-        "file_pattern"   -> "CHANGELOG.md docToolchainConfig.groovy"
-      )
-    ),
-    WorkflowStep.Use(
-      name = Some("Create version tag"),
-      ref = UseRef.Public("rickstaa", "action-create-tag", "v1"),
-      cond = Some("""startsWith(github.ref, 'refs/tags/v')"""),
-      params = Map(
-        "tag"            -> "${{ github.ref_name }}",
-        "message"        -> "Release ${{ github.ref_name }}",
-        "force_push_tag" -> "true" // force push the tag to move it to HEAD
-      )
-    ),
-    WorkflowStep.Use(
-      name = Some("Create release"),
-      ref = UseRef.Public("ncipollo", "release-action", "v1.15.0"),
-      cond = Some("""startsWith(github.ref, 'refs/tags/v')"""),
-      params = Map(
-        "allowUpdates" -> "true",
-        "draft"        -> "false",
-        "makeLatest"   -> "true",
-        "name"         -> "${{ github.ref_name }}",
-        "tag"          -> "${{ github.ref_name }}",
-        "body"         -> "${{ steps.changelog.outputs.changes }}",
-        "token"        -> "${{ github.token }}"
-      )
     )
   )
 )
