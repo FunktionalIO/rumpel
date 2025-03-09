@@ -31,6 +31,8 @@ ThisBuild / tlCiMimaBinaryIssueCheck := true
 ThisBuild / tlCiDependencyGraphJob   := true
 ThisBuild / autoAPIMappings          := true
 
+ThisBuild / sonatypeCredentialHost := sonatypeCentralHost
+
 val sharedSettings = Seq(
   organization   := "io.funktional",
   name           := "rumpel",
