@@ -24,52 +24,52 @@ concurrency:
 
 jobs:
   build:
-    name: Build and Test
+    name: Test
     strategy:
       matrix:
         os: [ubuntu-latest]
         scala: [3]
-        java: [temurin@11]
+        java: [graalvm@21]
     runs-on: ${{ matrix.os }}
     timeout-minutes: 60
     steps:
-      - name: Install sbt
-        uses: sbt/setup-sbt@v1
-
       - name: Checkout current branch (full)
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Setup Java (temurin@11)
-        id: setup-java-temurin-11
-        if: matrix.java == 'temurin@11'
+      - name: Setup sbt
+        uses: sbt/setup-sbt@v1
+
+      - name: Setup Java (graalvm@21)
+        id: setup-java-graalvm-21
+        if: matrix.java == 'graalvm@21'
         uses: actions/setup-java@v4
         with:
-          distribution: temurin
-          java-version: 11
+          distribution: graalvm
+          java-version: 21
           cache: sbt
 
       - name: sbt update
-        if: matrix.java == 'temurin@11' && steps.setup-java-temurin-11.outputs.cache-hit == 'false'
+        if: matrix.java == 'graalvm@21' && steps.setup-java-graalvm-21.outputs.cache-hit == 'false'
         run: sbt +update
 
       - name: Check that workflows are up to date
         run: sbt githubWorkflowCheck
 
       - name: Check headers and formatting
-        if: matrix.java == 'temurin@11' && matrix.os == 'ubuntu-latest'
+        if: matrix.java == 'graalvm@21' && matrix.os == 'ubuntu-latest'
         run: sbt '++ ${{ matrix.scala }}' headerCheckAll scalafmtCheckAll 'project /' scalafmtSbtCheck
 
       - name: Test
         run: sbt '++ ${{ matrix.scala }}' test
 
       - name: Check binary compatibility
-        if: matrix.java == 'temurin@11' && matrix.os == 'ubuntu-latest'
+        if: matrix.java == 'graalvm@21' && matrix.os == 'ubuntu-latest'
         run: sbt '++ ${{ matrix.scala }}' mimaReportBinaryIssues
 
       - name: Generate API documentation
-        if: matrix.java == 'temurin@11' && matrix.os == 'ubuntu-latest'
+        if: matrix.java == 'graalvm@21' && matrix.os == 'ubuntu-latest'
         run: sbt '++ ${{ matrix.scala }}' doc
 
       - name: Make target directories
@@ -94,28 +94,28 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        java: [temurin@11]
+        java: [graalvm@21]
     runs-on: ${{ matrix.os }}
     steps:
-      - name: Install sbt
-        uses: sbt/setup-sbt@v1
-
       - name: Checkout current branch (full)
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Setup Java (temurin@11)
-        id: setup-java-temurin-11
-        if: matrix.java == 'temurin@11'
+      - name: Setup sbt
+        uses: sbt/setup-sbt@v1
+
+      - name: Setup Java (graalvm@21)
+        id: setup-java-graalvm-21
+        if: matrix.java == 'graalvm@21'
         uses: actions/setup-java@v4
         with:
-          distribution: temurin
-          java-version: 11
+          distribution: graalvm
+          java-version: 21
           cache: sbt
 
       - name: sbt update
-        if: matrix.java == 'temurin@11' && steps.setup-java-temurin-11.outputs.cache-hit == 'false'
+        if: matrix.java == 'graalvm@21' && steps.setup-java-graalvm-21.outputs.cache-hit == 'false'
         run: sbt +update
 
       - name: Download target directories (3)
@@ -157,29 +157,29 @@ jobs:
     if: github.event.repository.fork == false && github.event_name != 'pull_request'
     strategy:
       matrix:
-        os: [ubuntu-latest]
-        java: [temurin@11]
+        os: [ubuntu-22.04]
+        java: [graalvm@21]
     runs-on: ${{ matrix.os }}
     steps:
-      - name: Install sbt
-        uses: sbt/setup-sbt@v1
-
       - name: Checkout current branch (full)
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Setup Java (temurin@11)
-        id: setup-java-temurin-11
-        if: matrix.java == 'temurin@11'
+      - name: Setup sbt
+        uses: sbt/setup-sbt@v1
+
+      - name: Setup Java (graalvm@21)
+        id: setup-java-graalvm-21
+        if: matrix.java == 'graalvm@21'
         uses: actions/setup-java@v4
         with:
-          distribution: temurin
-          java-version: 11
+          distribution: graalvm
+          java-version: 21
           cache: sbt
 
       - name: sbt update
-        if: matrix.java == 'temurin@11' && steps.setup-java-temurin-11.outputs.cache-hit == 'false'
+        if: matrix.java == 'graalvm@21' && steps.setup-java-graalvm-21.outputs.cache-hit == 'false'
         run: sbt +update
 
       - name: Submit Dependencies
@@ -191,7 +191,7 @@ jobs:
     name: Validate Steward Config
     strategy:
       matrix:
-        os: [ubuntu-latest]
+        os: [ubuntu-22.04]
         java: [temurin@11]
     runs-on: ${{ matrix.os }}
     steps:
@@ -284,7 +284,7 @@ jobs:
 
       - name: Create release
         if: startsWith(github.ref, 'refs/tags/v')
-        uses: ncipollo/release-action@v1.14.0
+        uses: ncipollo/release-action@v1.15.0
         with:
           body: ${{ steps.changelog.outputs.changes }}
           name: ${{ github.ref_name }}
