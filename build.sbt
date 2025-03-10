@@ -38,7 +38,8 @@ val sharedSettings = Seq(
   name           := "rumpel",
   scalaVersion   := Scala3,
   libraryDependencies ++= Seq(
-    "org.scalameta" %%% "munit" % "1.0.2" % Test
+    "org.scalameta" %%% "munit"            % "1.0.2" % Test,
+    "org.scalameta" %%% "munit-scalacheck" % "1.1.0" % Test
   ),
   // Headers
   headerMappings := headerMappings.value + (HeaderFileType.scala -> HeaderCommentStyle.cppStyleLineComment),

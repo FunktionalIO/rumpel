@@ -12,15 +12,17 @@ trait Random:
     def pick[T](list: List[T], n: Int): (Random, List[T])
 
 object Random:
-    def default: Random            = Impl(System.nanoTime())
-    def withSeed(seed: Long): Impl = Impl(seed)
+    def default: Random              = Impl(System.nanoTime())
+    def withSeed(seed: Long): Random =
+        require(seed > 0, "seed must be positive")
+        Impl(seed)
 
     /**
      * A case class representing a random number generator.
      *
      * @param seed the initial seed value
      */
-    case class Impl(seed: Long) extends Random:
+    private final case class Impl(seed: Long) extends Random:
         private def next: Random = Impl(seed * 6364136223846793005L + 1442695040888963407L)
 
         /**
@@ -39,8 +41,9 @@ object Random:
          * @return a tuple containing the next Random instance and the generated integer value
          */
         def nextInt(n: Int): (Random, Int) =
+            require(n > 0, "n must be positive")
             val (next, value) = nextLong
-            (next, (value >>> 16).toInt % n)
+            (next, (value % n).toInt)
 
         /**
          * Shuffles the elements of the given list using the random number generator.
