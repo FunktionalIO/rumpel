@@ -51,7 +51,7 @@ val releasePreparation = WorkflowJob(
       params = Map(
         "commit_message" -> "docs: update CHANGELOG.md for ${{ env.nextTag }} [skip ci]",
         "branch"         -> "main",
-        "file_pattern"   -> "CHANGELOG.md docToolchainConfig.groovy"
+        "file_pattern"   -> "CHANGELOG.md"
       )
     ),
     WorkflowStep.Use(

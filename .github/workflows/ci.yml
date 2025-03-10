@@ -272,7 +272,7 @@ jobs:
         with:
           commit_message: 'docs: update CHANGELOG.md for ${{ env.nextTag }} [skip ci]'
           branch: main
-          file_pattern: CHANGELOG.md docToolchainConfig.groovy
+          file_pattern: CHANGELOG.md
 
       - name: Create version tag
         if: startsWith(github.ref, 'refs/tags/v')
