@@ -23,7 +23,7 @@ object Random:
      * @param seed the initial seed value
      */
     private final case class Impl(seed: Long) extends Random:
-        private def next: Random = Impl(seed * 6364136223846793005L + 1442695040888963407L)
+        private def next: Random = Impl((seed * 0x5deece66dL + 0xbL) & ((1L << 48) - 1))
 
         /**
          * Generates the next random long value.
